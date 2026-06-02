@@ -1,5 +1,10 @@
 from django.urls import path
 from .views import (
+    HomeView,
+    TasksPageView,
+    UsersPageView,
+    AboutView,
+    ContactView,
     TasksView,
     TaskDetailView,
     CreateTaskView,
@@ -24,4 +29,29 @@ urlpatterns = [
 
     path('user-search/',
          UserDetailView.as_view()),
+
+         path(
+    '',
+    HomeView.as_view()
+),
+
+path(
+    'tasks-page/',
+    TasksPageView.as_view()
+),
+
+path(
+    'users-page/',
+    UsersPageView.as_view()
+),
+
+path(
+    'about/',
+    AboutView.as_view()
+),
+
+path(
+    'contact/',
+    ContactView.as_view()
+),
 ]

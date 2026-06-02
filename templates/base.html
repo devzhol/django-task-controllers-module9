@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Task List</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+<body>
+
+<nav>
+
+    <a href="/">Главная</a> |
+    <a href="/tasks/">Задачи</a> |
+    <a href="/users/">Пользователи</a> |
+    <a href="/about/">О проекте</a>
+
+</nav>
+
+<hr>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

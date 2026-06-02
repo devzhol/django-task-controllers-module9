@@ -1,10 +1,86 @@
 from django.http import JsonResponse
-from django.views import View   
-from django.views import View
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.views import View  
 from .forms import UserSearchForm
+from django.shortcuts import render
 
+tasks_data = [
+
+    {
+        'title': 'Изучить Django'
+    },
+
+    {
+        'title': 'Сделать ДЗ'
+    }
+]
+
+
+users_data = [
+
+    {
+        'name': 'Alihan'
+    },
+
+    {
+        'name': 'Dana'
+    }
+]
+
+
+class HomeView(View):
+
+    def get(self, request):
+
+        return render(
+            request,
+            'home.html'
+        )
+
+
+class TasksPageView(View):
+
+    def get(self, request):
+
+        return render(
+            request,
+            'tasks.html',
+            {
+                'tasks': tasks_data
+            }
+        )
+
+
+class UsersPageView(View):
+
+    def get(self, request):
+
+        return render(
+            request,
+            'users.html',
+            {
+                'users': users_data
+            }
+        )
+
+
+class AboutView(View):
+
+    def get(self, request):
+
+        return render(
+            request,
+            'about.html'
+        )
+
+
+class ContactView(View):
+
+    def get(self, request):
+
+        return render(
+            request,
+            'contact.html'
+        )
 
 # Временная база пользователей
 users = [

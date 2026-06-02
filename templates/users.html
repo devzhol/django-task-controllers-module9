@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Пользователи</h1>
+
+{% for user in users %}
+
+<div class="card">
+
+    {{ user.name }}
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
