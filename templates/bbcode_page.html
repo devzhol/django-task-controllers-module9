@@ -9,6 +9,21 @@
     <p>Длина текста: {{ text_length }} символов.</p>
 {% endwith %}
 
+<p>Половина текста в формате BBCode:</p>
+<div class="card">
+    {{ text|half }}
+</div>
+
+{% split_to_list comma_text "," as names %}
+
+<h2>Разделённый список</h2>
+<p>Исходная строка: <strong>{{ comma_text }}</strong></p>
+<ul>
+    {% for name in names %}
+        <li>{{ name }}</li>
+    {% endfor %}
+</ul>
+
 {% if text %}
     <div class="card">
         {{ text|bbcode_to_html }}

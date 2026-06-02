@@ -7,6 +7,10 @@
     <title>Task List</title>
 
     <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+    <link
         rel="stylesheet"
         href="{% static 'css/style.css' %}"
     >
@@ -14,20 +18,26 @@
 </head>
 <body>
 
-<nav>
-
-    <a href="/">Главная</a> |
-    <a href="/tasks/">Задачи</a> |
-    <a href="/users/">Пользователи</a> |
-    <a href="/bbcode/">BBCode</a> |
-    <a href="/about/">О проекте</a>
-
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">Task List</a>
+        <div>
+            <a class="nav-link d-inline" href="/">Главная</a>
+            <a class="nav-link d-inline" href="/tasks/">Задачи</a>
+            <a class="nav-link d-inline" href="/users/">Пользователи</a>
+            <a class="nav-link d-inline" href="/bbcode/">BBCode</a>
+            <a class="nav-link d-inline" href="/about/">О проекте</a>
+        </div>
+    </div>
 </nav>
 
-<hr>
+<div class="container">
 
 {% block content %}
 {% endblock %}
 
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

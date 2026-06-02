@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views import View  
 from .forms import UserSearchForm
@@ -18,11 +19,14 @@ Official site
 
 """
 
+        comma_text = 'Alihan,Dana,Django,Python'
+
         return render(
             request,
             'bbcode_page.html',
             {
-                'text': text
+                'text': text,
+                'comma_text': comma_text
             }
         )
 
@@ -64,11 +68,16 @@ class TasksPageView(View):
 
     def get(self, request):
 
+        paginator = Paginator(tasks_data, 1)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+
         return render(
             request,
             'tasks.html',
             {
-                'tasks': tasks_data
+                'tasks': page_obj.object_list,
+                'page_obj': page_obj,
             }
         )
 

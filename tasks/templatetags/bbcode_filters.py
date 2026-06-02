@@ -21,3 +21,21 @@ def completed_status(value):
     if isinstance(value, bool):
         return '✅ Выполнено' if value else '❌ В процессе'
     return value
+
+
+@register.filter
+def half(value):
+    """Trim a string to its first half."""
+    if value is None:
+        return ''
+    text = str(value)
+    half_length = len(text) // 2
+    return text[:half_length]
+
+
+@register.simple_tag
+def split_to_list(value, separator=','):
+    """Split a string by separator and return a list of parts."""
+    if value is None:
+        return []
+    return [part.strip() for part in str(value).split(separator) if part.strip()]
