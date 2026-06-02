@@ -15,6 +15,7 @@ from .views import (
     BBCodeView,
     IceCreamCreateView,
     IceCreamBatchCreateView,
+    RecipeListView,
     LoginView,
     LogoutView
 )
@@ -70,6 +71,10 @@ path(
 path(
     'icecream/batch/',
     IceCreamBatchCreateView.as_view()
+),
+path(
+    'recipes/',
+    RecipeListView.as_view()
 ),
 path(
     'login/',

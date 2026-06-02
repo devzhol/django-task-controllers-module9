@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View  
 from .forms import UserSearchForm, IceCreamForm
-from .models import IceCream
+from .models import IceCream, Recipe, Ingredient
 
 
 def get_user_manager_group():
@@ -137,6 +137,42 @@ class TasksPageView(View):
                 'page_obj': page_obj,
             }
         )
+
+
+class RecipeListView(View):
+
+    def get(self, request):
+        if not Ingredient.objects.exists():
+            tomatoes = Ingredient.objects.create(name='Tomato')
+            basil = Ingredient.objects.create(name='Basil')
+            mozzarella = Ingredient.objects.create(name='Mozzarella')
+            flour = Ingredient.objects.create(name='Flour')
+            olive_oil = Ingredient.objects.create(name='Olive oil')
+
+            margherita = Recipe.objects.create(
+                title='Pizza Margherita',
+                description='Classic Italian pizza with tomato, mozzarella and basil.'
+            )
+            margherita.ingredients.set([tomatoes, basil, mozzarella, olive_oil])
+
+            bruschetta = Recipe.objects.create(
+                title='Bruschetta',
+                description='Toasted bread with tomato, basil and olive oil.'
+            )
+            bruschetta.ingredients.set([tomatoes, basil, olive_oil, flour])
+
+        recipes = Recipe.objects.only('title').prefetch_related(
+            'ingredients'
+        )
+
+        recipe_list = []
+        for recipe in recipes:
+            recipe_list.append({
+                'title': recipe.title,
+                'ingredients': [ingredient.name for ingredient in recipe.ingredients.only('name')],
+            })
+
+        return render(request, 'recipes.html', {'recipes': recipe_list})
 
 
 @method_decorator(user_passes_test(user_is_manager, login_url='/login/'), name='dispatch')
