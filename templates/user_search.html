@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Поиск пользователя</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 
 <h1>Поиск пользователя</h1>
 
-<form method="post">
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+</div>
 
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Найти
-    </button>
-
-</form>
-
-</body>
-</html>
+{% endblock %}

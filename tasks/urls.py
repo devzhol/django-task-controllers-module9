@@ -14,7 +14,9 @@ from .views import (
     UserDetailView,
     BBCodeView,
     IceCreamCreateView,
-    IceCreamBatchCreateView
+    IceCreamBatchCreateView,
+    LoginView,
+    LogoutView
 )
 
 urlpatterns = [
@@ -68,5 +70,15 @@ path(
 path(
     'icecream/batch/',
     IceCreamBatchCreateView.as_view()
+),
+path(
+    'login/',
+    LoginView.as_view(),
+    name='login'
+),
+path(
+    'logout/',
+    LogoutView.as_view(),
+    name='logout'
 ),
 ]

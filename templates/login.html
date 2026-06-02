@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Вход</h1>
+
+<div class="card p-4 mb-4">
+    <form method="post">
+        {% csrf_token %}
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="id_username">Имя пользователя</label>
+            <input class="form-control" type="text" name="username" id="id_username" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="id_password">Пароль</label>
+            <input class="form-control" type="password" name="password" id="id_password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+</div>
+
+{% endblock %}

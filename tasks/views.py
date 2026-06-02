@@ -1,10 +1,65 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import Group, Permission, User
+from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
 from django.views import View  
 from .forms import UserSearchForm, IceCreamForm
 from .models import IceCream
-from django.shortcuts import render
+
+
+def get_user_manager_group():
+    group, _ = Group.objects.get_or_create(name='UserManagers')
+    user_ct = ContentType.objects.get_for_model(User)
+    permissions = Permission.objects.filter(
+        content_type=user_ct,
+        codename__in=['add_user', 'change_user', 'delete_user', 'view_user']
+    )
+    group.permissions.set(permissions)
+    group.user_set.add(*User.objects.filter(is_superuser=True))
+    return group
+
+
+def user_is_manager(user):
+    return user.is_authenticated and user.groups.filter(name='UserManagers').exists()
+
+class LoginView(View):
+
+    def get(self, request):
+        return render(request, 'login.html')
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            group = get_user_manager_group()
+            group.user_set.add(user)
+
+            print('AUTH INFO:')
+            print('username=', user.username)
+            print('is_authenticated=', user.is_authenticated)
+            print('is_superuser=', user.is_superuser)
+            print('groups=', [group.name for group in user.groups.all()])
+            print('perms=', sorted(user.get_all_permissions()))
+
+            return redirect('/users-page/')
+
+        return render(request, 'login.html', {'error': 'Неверное имя пользователя или пароль.'})
+
+
+class LogoutView(View):
+
+    def get(self, request):
+        logout(request)
+        return redirect('/login/')
+
 
 class BBCodeView(View):
 
@@ -84,6 +139,7 @@ class TasksPageView(View):
         )
 
 
+@method_decorator(user_passes_test(user_is_manager, login_url='/login/'), name='dispatch')
 class UsersPageView(View):
 
     def get(self, request):
@@ -185,6 +241,7 @@ users = [
 
 
 # Все пользователи
+@method_decorator(user_passes_test(user_is_manager, login_url='/login/'), name='dispatch')
 class UsersView(View):
 
     def get(self, request):
@@ -196,6 +253,7 @@ class UsersView(View):
 
 
 # Поиск пользователя через форму
+@method_decorator(user_passes_test(user_is_manager, login_url='/login/'), name='dispatch')
 class UserDetailView(View):
 
     def get(self, request):
