@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Мороженое создано</h1>
+
+<div class="alert alert-success">
+    Запись сохранена успешно.
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ icecream.name }}</h5>
+        <p class="card-text">Вкус: {{ icecream.flavor }}</p>
+        <p class="card-text">Цена: {{ icecream.price }}</p>
+        <p class="card-text">Дата создания: {{ icecream.created_at }}</p>
+    </div>
+</div>
+
+<a href="/icecream/create/" class="btn btn-secondary mt-3">Добавить ещё</a>
+
+{% endblock %}

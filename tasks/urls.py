@@ -12,7 +12,8 @@ from .views import (
     DeleteTaskView,
     UsersView,
     UserDetailView,
-    BBCodeView
+    BBCodeView,
+    IceCreamCreateView
 )
 
 urlpatterns = [
@@ -58,5 +59,9 @@ path(
 path(
     'bbcode/',
     BBCodeView.as_view()
+),
+path(
+    'icecream/create/',
+    IceCreamCreateView.as_view()
 ),
 ]

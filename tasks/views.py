@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views import View  
-from .forms import UserSearchForm
+from .forms import UserSearchForm, IceCreamForm
 from django.shortcuts import render
 
 class BBCodeView(View):
@@ -93,6 +93,21 @@ class UsersPageView(View):
                 'users': users_data
             }
         )
+
+
+class IceCreamCreateView(View):
+
+    def get(self, request):
+        form = IceCreamForm()
+        return render(request, 'icecream_form.html', {'form': form})
+
+    def post(self, request):
+        form = IceCreamForm(request.POST)
+        if form.is_valid():
+            icecream = form.save()
+            return render(request, 'icecream_success.html', {'icecream': icecream})
+
+        return render(request, 'icecream_form.html', {'form': form})
 
 
 class AboutView(View):
