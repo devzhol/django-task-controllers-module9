@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Пакет форм: добавить несколько мороженых</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    {% for form in formset %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Мороженое {{ forloop.counter }}</h5>
+                {{ form.non_field_errors }}
+                {{ form.as_p }}
+            </div>
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Сохранить все</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Набор мороженого сохранён</h1>
+
+<div class="alert alert-success">
+    Все валидные записи были сохранены в базу данных.
+</div>
+
+{% if icecreams %}
+    <div class="row">
+        {% for icecream in icecreams %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ icecream.name }}</h5>
+                        <p class="card-text">Вкус: {{ icecream.flavor }}</p>
+                        <p class="card-text">Цена: {{ icecream.price }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Нет сохранённых записей.</p>
+{% endif %}
+
+<a href="/icecream/batch/" class="btn btn-secondary">Добавить ещё</a>
+
+{% endblock %}

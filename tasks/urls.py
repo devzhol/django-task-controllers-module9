@@ -13,7 +13,8 @@ from .views import (
     UsersView,
     UserDetailView,
     BBCodeView,
-    IceCreamCreateView
+    IceCreamCreateView,
+    IceCreamBatchCreateView
 )
 
 urlpatterns = [
@@ -63,5 +64,9 @@ path(
 path(
     'icecream/create/',
     IceCreamCreateView.as_view()
+),
+path(
+    'icecream/batch/',
+    IceCreamBatchCreateView.as_view()
 ),
 ]

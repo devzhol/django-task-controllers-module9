@@ -1,7 +1,9 @@
 from django.core.paginator import Paginator
+from django.forms import modelformset_factory
 from django.http import JsonResponse
 from django.views import View  
 from .forms import UserSearchForm, IceCreamForm
+from .models import IceCream
 from django.shortcuts import render
 
 class BBCodeView(View):
@@ -108,6 +110,36 @@ class IceCreamCreateView(View):
             return render(request, 'icecream_success.html', {'icecream': icecream})
 
         return render(request, 'icecream_form.html', {'form': form})
+
+
+class IceCreamBatchCreateView(View):
+
+    def get(self, request):
+        IceCreamFormSet = modelformset_factory(
+            IceCream,
+            form=IceCreamForm,
+            fields=['name', 'flavor', 'price'],
+            extra=3,
+            validate_max=False,
+        )
+        formset = IceCreamFormSet(queryset=IceCream.objects.none())
+        return render(request, 'icecream_batch_form.html', {'formset': formset})
+
+    def post(self, request):
+        IceCreamFormSet = modelformset_factory(
+            IceCream,
+            form=IceCreamForm,
+            fields=['name', 'flavor', 'price'],
+            extra=3,
+            validate_max=False,
+        )
+        formset = IceCreamFormSet(request.POST, queryset=IceCream.objects.none())
+
+        if formset.is_valid():
+            icecreams = formset.save()
+            return render(request, 'icecream_batch_success.html', {'icecreams': icecreams})
+
+        return render(request, 'icecream_batch_form.html', {'formset': formset})
 
 
 class AboutView(View):
