@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View  
 from .forms import UserSearchForm, IceCreamForm
-from .models import IceCream, Recipe, Ingredient
+from .models import IceCream, Recipe, Ingredient, GourmetIceCream
 
 
 def get_user_manager_group():
@@ -173,6 +173,35 @@ class RecipeListView(View):
             })
 
         return render(request, 'recipes.html', {'recipes': recipe_list})
+
+
+class GourmetIceCreamListView(View):
+
+    def get(self, request):
+        if not GourmetIceCream.objects.exists():
+            GourmetIceCream.objects.create(
+                name='Bella Gelato',
+                price=5.50,
+                description='Creamy gelato with premium vanilla.',
+                dairy_free=False,
+                category='Dessert',
+                sweetness_level='High',
+                flavor='Vanilla',
+                scoop_size='Large'
+            )
+            GourmetIceCream.objects.create(
+                name='Berry Dream',
+                price=6.20,
+                description='Fresh berry sorbet with bright fruit flavor.',
+                dairy_free=True,
+                category='Dessert',
+                sweetness_level='Medium',
+                flavor='Berry',
+                scoop_size='Medium'
+            )
+
+        gourmet_list = GourmetIceCream.objects.only('name', 'flavor', 'price')
+        return render(request, 'gourmet_icecream.html', {'gourmet_list': gourmet_list})
 
 
 @method_decorator(user_passes_test(user_is_manager, login_url='/login/'), name='dispatch')

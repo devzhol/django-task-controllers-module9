@@ -16,6 +16,7 @@ from .views import (
     IceCreamCreateView,
     IceCreamBatchCreateView,
     RecipeListView,
+    GourmetIceCreamListView,
     LoginView,
     LogoutView
 )
@@ -75,6 +76,10 @@ path(
 path(
     'recipes/',
     RecipeListView.as_view()
+),
+path(
+    'gourmet-icecream/',
+    GourmetIceCreamListView.as_view()
 ),
 path(
     'login/',
