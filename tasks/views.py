@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator
@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View  
-from .forms import UserSearchForm, IceCreamForm, ContactForm
-from .models import ContactMessage, IceCream, Recipe, Ingredient, GourmetIceCream
+from .forms import UserSearchForm, IceCreamForm, ContactForm, UserProfileForm
+from .models import ContactMessage, IceCream, Recipe, Ingredient, GourmetIceCream, UserProfile
 
 
 def get_user_manager_group():
@@ -294,6 +294,26 @@ class ContactView(View):
             })
 
         return render(request, 'contact.html', {'form': form})
+
+
+@method_decorator(login_required, name='dispatch')
+class ProfileView(View):
+
+    def get(self, request):
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        form = UserProfileForm(instance=profile)
+        return render(request, 'profile_form.html', {'form': form})
+
+    def post(self, request):
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return render(request, 'profile_form.html', {
+                'form': form,
+                'success': 'Профиль успешно сохранён.'
+            })
+        return render(request, 'profile_form.html', {'form': form})
 
 # Временная база пользователей
 users = [

@@ -18,7 +18,8 @@ from .views import (
     RecipeListView,
     GourmetIceCreamListView,
     LoginView,
-    LogoutView
+    LogoutView,
+    ProfileView
 )
 
 urlpatterns = [
@@ -90,5 +91,10 @@ path(
     'logout/',
     LogoutView.as_view(),
     name='logout'
+),
+path(
+    'profile/',
+    ProfileView.as_view(),
+    name='profile'
 ),
 ]

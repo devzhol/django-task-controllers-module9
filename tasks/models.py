@@ -1,4 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from localflavor.generic.models import IBANField
+from localflavor.us.models import USStateField, USZipCodeField
 
 
 class Ingredient(models.Model):
@@ -28,6 +33,23 @@ class IceCream(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.flavor})"
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    state = USStateField(default='NY')
+    postal_code = USZipCodeField()
+    iban = IBANField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Profile for {self.user.username}"
+
+
+@receiver(post_save, sender=get_user_model())
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
 
 class ContactMessage(models.Model):

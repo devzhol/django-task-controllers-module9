@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Профиль пользователя</h1>
+
+{% if success %}
+<div class="alert alert-success" role="alert">
+    {{ success }}
+</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.state.label_tag }}
+        {{ form.state }}
+        {% if form.state.errors %}
+            <div class="text-danger">{{ form.state.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        {{ form.postal_code.label_tag }}
+        {{ form.postal_code }}
+        {% if form.postal_code.errors %}
+            <div class="text-danger">{{ form.postal_code.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        {{ form.iban.label_tag }}
+        {{ form.iban }}
+        {% if form.iban.errors %}
+            <div class="text-danger">{{ form.iban.errors }}</div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+{% endblock %}

@@ -33,6 +33,7 @@
             <a class="nav-link d-inline" href="/about/">О проекте</a>
             {% if user.is_authenticated %}
                 <span class="navbar-text ms-3">{{ user.username }}</span>
+                <a class="nav-link d-inline" href="/profile/">Профиль</a>
                 <a class="nav-link d-inline" href="/logout/">Выйти</a>
             {% else %}
                 <a class="nav-link d-inline" href="/login/">Войти</a>

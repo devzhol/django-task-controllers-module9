@@ -1,6 +1,6 @@
 from captcha.fields import CaptchaField
 from django import forms
-from .models import IceCream
+from .models import IceCream, UserProfile
 
 
 class UserSearchForm(forms.Form):
@@ -17,6 +17,18 @@ class ContactForm(forms.Form):
     subject = forms.CharField(max_length=150, label='Тема')
     message = forms.CharField(widget=forms.Textarea, label='Сообщение')
     captcha = CaptchaField(label='Проверка')
+
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ['state', 'postal_code', 'iban']
+        labels = {
+            'state': 'Штат',
+            'postal_code': 'Почтовый индекс',
+            'iban': 'IBAN',
+        }
 
 
 class IceCreamForm(forms.ModelForm):
