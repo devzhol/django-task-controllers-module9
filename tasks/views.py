@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View  
-from .forms import UserSearchForm, IceCreamForm
-from .models import IceCream, Recipe, Ingredient, GourmetIceCream
+from .forms import UserSearchForm, IceCreamForm, ContactForm
+from .models import ContactMessage, IceCream, Recipe, Ingredient, GourmetIceCream
 
 
 def get_user_manager_group():
@@ -276,11 +276,24 @@ class AboutView(View):
 class ContactView(View):
 
     def get(self, request):
+        form = ContactForm()
+        return render(request, 'contact.html', {'form': form})
 
-        return render(
-            request,
-            'contact.html'
-        )
+    def post(self, request):
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            ContactMessage.objects.create(
+                name=form.cleaned_data['name'],
+                email=form.cleaned_data['email'],
+                subject=form.cleaned_data['subject'],
+                message=form.cleaned_data['message'],
+            )
+            return render(request, 'contact.html', {
+                'form': ContactForm(),
+                'success': 'Сообщение успешно сохранено.'
+            })
+
+        return render(request, 'contact.html', {'form': form})
 
 # Временная база пользователей
 users = [
