@@ -3,18 +3,28 @@ from .views import *
 
 urlpatterns = [
 
-    # Все задачи
-    path('tasks/', get_tasks),
+    path(
+        'tasks/',
+        TasksView.as_view()
+    ),
 
-    # Одна задача
-    path('tasks/<int:id>/', get_task),
+    path(
+        'tasks/<int:id>/',
+        TaskDetailView.as_view()
+    ),
 
-    # Создание
-    path('tasks/create/', create_task),
+    path(
+        'tasks/create/',
+        CreateTaskView.as_view()
+    ),
 
-    # Обновление
-    path('tasks/update/<int:id>/', update_task),
+    path(
+        'tasks/update/<int:id>/',
+        UpdateTaskView.as_view()
+    ),
 
-    # Удаление
-    path('tasks/delete/<int:id>/', delete_task),
+    path(
+        'tasks/delete/<int:id>/',
+        DeleteTaskView.as_view()
+    ),
 ]

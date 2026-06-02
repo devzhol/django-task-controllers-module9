@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Форма обратной связи</title>
+</head>
+<body>
+
+    <h1>Форма обратной связи</h1>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Отправить
+        </button>
+
+    </form>
+
+</body>
+</html>

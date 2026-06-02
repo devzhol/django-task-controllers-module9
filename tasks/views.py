@@ -1,7 +1,8 @@
 from django.http import JsonResponse
+from django.views import View
 
 
-# Временная база данных
+# Временная база задач
 tasks = [
 
     {
@@ -12,87 +13,94 @@ tasks = [
 
     {
         'id': 2,
-        'title': 'Сделать домашку',
+        'title': 'Сделать домашнее задание',
         'completed': True
-    },
-
-    {
-        'id': 3,
-        'title': 'Загрузить проект на GitHub',
-        'completed': False
     },
 ]
 
 
 # Получение всех задач
-def get_tasks(request):
+class TasksView(View):
 
-    return JsonResponse(tasks, safe=False)
+    def get(self, request):
+
+        return JsonResponse(
+            tasks,
+            safe=False
+        )
 
 
 # Получение одной задачи
-def get_task(request, id):
+class TaskDetailView(View):
 
-    for task in tasks:
+    def get(self, request, id):
 
-        if task['id'] == id:
-            return JsonResponse(task)
+        for task in tasks:
 
-    return JsonResponse({
-        'error': 'Задача не найдена'
-    })
+            if task['id'] == id:
+                return JsonResponse(task)
+
+        return JsonResponse({
+            'error': 'Задача не найдена'
+        })
 
 
 # Создание задачи
-def create_task(request):
+class CreateTaskView(View):
 
-    new_task = {
+    def get(self, request):
 
-        'id': len(tasks) + 1,
-        'title': f'Новая задача {len(tasks) + 1}',
-        'completed': False
-    }
+        new_task = {
 
-    tasks.append(new_task)
+            'id': len(tasks) + 1,
+            'title': f'Новая задача {len(tasks)+1}',
+            'completed': False
+        }
 
-    return JsonResponse({
-        'message': 'Задача создана',
-        'task': new_task
-    })
+        tasks.append(new_task)
+
+        return JsonResponse({
+            'message': 'Задача создана',
+            'task': new_task
+        })
 
 
 # Обновление задачи
-def update_task(request, id):
+class UpdateTaskView(View):
 
-    for task in tasks:
+    def get(self, request, id):
 
-        if task['id'] == id:
+        for task in tasks:
 
-            task['completed'] = True
+            if task['id'] == id:
 
-            return JsonResponse({
-                'message': 'Задача обновлена',
-                'task': task
-            })
+                task['completed'] = True
 
-    return JsonResponse({
-        'error': 'Задача не найдена'
-    })
+                return JsonResponse({
+                    'message': 'Задача обновлена',
+                    'task': task
+                })
+
+        return JsonResponse({
+            'error': 'Задача не найдена'
+        })
 
 
 # Удаление задачи
-def delete_task(request, id):
+class DeleteTaskView(View):
 
-    for task in tasks:
+    def get(self, request, id):
 
-        if task['id'] == id:
+        for task in tasks:
 
-            tasks.remove(task)
+            if task['id'] == id:
 
-            return JsonResponse({
-                'message': 'Задача удалена'
-            })
+                tasks.remove(task)
 
-    return JsonResponse({
-        'error': 'Задача не найдена'
-    })
+                return JsonResponse({
+                    'message': 'Задача удалена'
+                })
+
+        return JsonResponse({
+            'error': 'Задача не найдена'
+        })
