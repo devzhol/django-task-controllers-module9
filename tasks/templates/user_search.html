@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Поиск пользователя</title>
+</head>
+<body>
+
+<h1>Поиск пользователя</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Найти
+    </button>
+
+</form>
+
+</body>
+</html>

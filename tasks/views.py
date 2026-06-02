@@ -1,5 +1,92 @@
 from django.http import JsonResponse
+from django.views import View   
 from django.views import View
+from django.http import JsonResponse
+from django.shortcuts import render
+from .forms import UserSearchForm
+
+
+# Временная база пользователей
+users = [
+
+    {
+        'id': 1,
+        'name': 'Alihan',
+        'email': 'alihan@gmail.com'
+    },
+
+    {
+        'id': 2,
+        'name': 'Askar',
+        'email': 'askar@gmail.com'
+    },
+
+    {
+        'id': 3,
+        'name': 'Dana',
+        'email': 'dana@gmail.com'
+    },
+]
+
+
+# Все пользователи
+class UsersView(View):
+
+    def get(self, request):
+
+        return JsonResponse(
+            users,
+            safe=False
+        )
+
+
+# Поиск пользователя через форму
+class UserDetailView(View):
+
+    def get(self, request):
+
+        form = UserSearchForm()
+
+        return render(
+            request,
+            'user_search.html',
+            {
+                'form': form
+            }
+        )
+
+    def post(self, request):
+
+        form = UserSearchForm(
+            request.POST
+        )
+
+        if form.is_valid():
+
+            user_id = form.cleaned_data[
+                'user_id'
+            ]
+
+            for user in users:
+
+                if user['id'] == user_id:
+
+                    return JsonResponse(
+                        user
+                    )
+
+            return JsonResponse({
+                'error':
+                'Пользователь не найден'
+            })
+
+        return render(
+            request,
+            'user_search.html',
+            {
+                'form': form
+            }
+        )
 
 
 # Временная база задач
