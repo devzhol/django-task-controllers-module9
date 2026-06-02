@@ -3,6 +3,29 @@ from django.views import View
 from .forms import UserSearchForm
 from django.shortcuts import render
 
+class BBCodeView(View):
+
+    def get(self, request):
+
+        text = """
+
+[b]Django[/b]
+[i]Web-development[/i]
+
+[url=https://djangoproject.com]
+Official site
+[/url]
+
+"""
+
+        return render(
+            request,
+            'bbcode_page.html',
+            {
+                'text': text
+            }
+        )
+
 tasks_data = [
 
     {

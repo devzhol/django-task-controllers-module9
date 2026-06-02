@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
+{% load bbcode_filters %}
 
 {% block content %}
 
-<h1>Список задач</h1>
+{% with total=tasks|length %}
+    <h1>Список задач ({{ total }})</h1>
+{% endwith %}
 
-{% for task in tasks %}
+{% if tasks %}
 
-<div class="card">
+    {% for task in tasks %}
 
-    {{ task.title }}
+        <div class="card {% cycle 'odd' 'even' %}">
 
-</div>
+            <strong>{{ forloop.counter }}.</strong>
+            {{ task.title|title }}
+            <div>{{ task.completed|completed_status }}</div>
 
-{% endfor %}
+            {% if task.completed %}
+                <small>Задача уже завершена.</small>
+            {% else %}
+                <small>Задача ещё не выполнена.</small>
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="card">
+        Нет задач для отображения.
+    </div>
+
+{% endif %}
 
 {% endblock %}

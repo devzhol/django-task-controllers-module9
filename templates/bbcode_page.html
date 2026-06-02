@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load bbcode_filters %}
+
+{% block content %}
+
+{% with text_length=text|length %}
+    <h1>BBCode example</h1>
+    <p>Длина текста: {{ text_length }} символов.</p>
+{% endwith %}
+
+{% if text %}
+    <div class="card">
+        {{ text|bbcode_to_html }}
+    </div>
+{% else %}
+    <div class="card">
+        Текст отсутствует.
+    </div>
+{% endif %}
+
+{% endblock %}

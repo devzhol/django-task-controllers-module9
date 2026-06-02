@@ -11,7 +11,8 @@ from .views import (
     UpdateTaskView,
     DeleteTaskView,
     UsersView,
-    UserDetailView
+    UserDetailView,
+    BBCodeView
 )
 
 urlpatterns = [
@@ -53,5 +54,9 @@ path(
 path(
     'contact/',
     ContactView.as_view()
+),
+path(
+    'bbcode/',
+    BBCodeView.as_view()
 ),
 ]
