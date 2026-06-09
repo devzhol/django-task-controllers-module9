@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.validators import FileExtensionValidator
 from localflavor.generic.models import IBANField
 from localflavor.us.models import USStateField, USZipCodeField
 
@@ -88,3 +89,24 @@ class GourmetIceCream(Dessert):
 
     def __str__(self):
         return f"{self.name} ({self.flavor})"
+
+
+class Document(models.Model):
+    title = models.CharField(max_length=200, verbose_name='Название документа')
+    description = models.TextField(blank=True, verbose_name='Описание')
+    file = models.FileField(
+        upload_to='documents/',
+        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'xlsx'])],
+        help_text='Поддерживаются только файлы .pdf и .xlsx',
+        verbose_name='Файл'
+    )
+    uploaded_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='documents')
+    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата загрузки')
+    
+    class Meta:
+        ordering = ['-uploaded_at']
+        verbose_name = 'Документ'
+        verbose_name_plural = 'Документы'
+
+    def __str__(self):
+        return f"{self.title} ({self.file.name})"

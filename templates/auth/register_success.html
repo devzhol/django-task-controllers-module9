@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация успешна{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow border-success">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">✓ Регистрация завершена!</h3>
+                </div>
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    
+                    <h5>Добро пожаловать, {{ username }}!</h5>
+                    <p class="text-muted">Ваш аккаунт успешно создан.</p>
+
+                    <div class="alert alert-success mt-3">
+                        <strong>✨ Отлично!</strong> Теперь вы можете войти в систему с помощью ваших учетных данных.
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'login' %}" class="btn btn-primary">
+                            🔐 Перейти к входу
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="text-muted">
+                        <small>
+                            Имя пользователя: <strong>{{ username }}</strong>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

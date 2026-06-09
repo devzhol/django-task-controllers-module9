@@ -19,7 +19,12 @@ from .views import (
     GourmetIceCreamListView,
     LoginView,
     LogoutView,
-    ProfileView
+    ProfileView,
+    DocumentUploadView,
+    DocumentListView,
+    RegisterView,
+    PasswordResetView,
+    PasswordResetConfirmView
 )
 
 urlpatterns = [
@@ -96,5 +101,31 @@ path(
     'profile/',
     ProfileView.as_view(),
     name='profile'
+),
+path(
+    'documents/upload/',
+    DocumentUploadView.as_view(),
+    name='document_upload'
+),
+path(
+    'documents/',
+    DocumentListView.as_view(),
+    name='document_list'
+),
+# Authentication URLs
+path(
+    'register/',
+    RegisterView.as_view(),
+    name='register'
+),
+path(
+    'password-reset/',
+    PasswordResetView.as_view(),
+    name='password_reset'
+),
+path(
+    'password-reset-confirm/<str:uidb64>/<str:token>/',
+    PasswordResetConfirmView.as_view(),
+    name='password_reset_confirm'
 ),
 ]
